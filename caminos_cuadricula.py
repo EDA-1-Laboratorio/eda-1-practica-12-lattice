@@ -281,6 +281,32 @@ def caminos_con_obstaculos(grid: list) -> int:
 
     pass  # TODO
 
+m, n = len(grid), len(grid[0])
+if grid[0][0] == 1 or grid[m-1][n-1] == 1:
+    return 0
+
+tabla = [[0] * n for _ in range(m)]
+
+for j in range(n):
+    if grid[0][j] == 1:
+        break
+    tabla[0][j] = 1
+
+for i in range(m):
+    if grid[i][0] == 1:
+        break
+    tabla[i][0] = 1
+
+for i in range(1, m):
+    for j in range(1, n):
+        if grid[i][j] == 1:
+            tabla[i][j] = 0
+        else:
+            tabla[i][j] = tabla[i-1][j] + tabla[i][j-1]
+
+return tabla[m-1][n-1]
+
+
 
 # ============================================================
 # EXPERIMENTOS
