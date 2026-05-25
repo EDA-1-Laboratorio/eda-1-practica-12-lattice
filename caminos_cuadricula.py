@@ -55,6 +55,9 @@ def medir(funcion, *args, repeticiones: int = 5):
 #   Por tanto:  caminos(0, j) = 1  para todo j
 #               caminos(i, 0) = 1  para todo i
 
+if m == 1 or n == 1:
+   return 1
+return caminos_recursivo(m - 1, n) + caminos_recursivo(m, n - 1)
 
 def caminos_recursivo(m: int, n: int) -> int:
     """
@@ -79,6 +82,8 @@ def caminos_recursivo(m: int, n: int) -> int:
     """
     # PASO 1 – Casos base.
     #   Si m == 1 o n == 1, solo existe UN camino posible. ¿Por qué?
+    
+
     #   (Pista: si solo hay una fila, el robot solo puede moverse a la derecha,
     #    sin elección. Lo mismo con una sola columna.)
 
@@ -87,6 +92,14 @@ def caminos_recursivo(m: int, n: int) -> int:
     #   Es una sola línea de código.
 
     pass  # TODO
+    if memo is None:
+    memo = {}
+if m == 1 or n == 1:
+    return 1
+if (m, n) in memo:
+    return memo[(m, n)]
+memo[(m, n)] = caminos_memo(m - 1, n, memo) + caminos_memo(m, n - 1, memo)
+return memo[(m, n)]
 
 
 def caminos_memo(m: int, n: int, memo: dict = None) -> int:
@@ -110,10 +123,27 @@ def caminos_memo(m: int, n: int, memo: dict = None) -> int:
     """
     # Sigue los cuatro pasos descritos arriba.
 
-    pass  # TODO
+    pass 
+tabla = [[0] * n for _ in range(m)]
+for j in range(n):
+    tabla[0][j] = 1
+for i in range(m):
+    tabla[i][0] = 1
+for i in range(1, m):
+    for j in range(1, n):
+        tabla[i][j] = tabla[i - 1][j] + tabla[i][j - 1]
+return (tabla[m - 1][n - 1], tabla)
+
 
 
 def caminos_bottom_up(m: int, n: int) -> tuple:
+
+max_val = max(max(fila) for fila in tabla)
+ancho = len(str(max_val)) + 1
+print(f"{titulo}:")
+for fila in tabla:
+    print(" ".join(str(val).rjust(ancho) for val in fila))
+
     """
     Cuenta los caminos de (0,0) a (m-1, n-1) — versión tabulación.
 
